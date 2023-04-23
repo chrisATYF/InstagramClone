@@ -63,5 +63,9 @@ export const useUserStore = defineStore('users', () => {
 
   const getUser = () => {};
 
-  return { user, errorMessage, handleLogin, handleLogout, handleSignup, getUser };
+  const clearErrorMessage = () => {
+    errorMessage.value = ""
+  }
+
+  return { user, errorMessage, handleLogin, handleLogout, handleSignup, getUser, clearErrorMessage };
 });
