@@ -5,7 +5,7 @@ import { storeToRefs } from "pinia"
 
 const userStore = useUserStore();
 
-const { errorMessage, loading } = storeToRefs(userStore);
+const { errorMessage, loading, user } = storeToRefs(userStore);
 const props = defineProps(['isLogin']);
 const visible = ref(false);
 
@@ -19,12 +19,23 @@ const showModal = () => {
     visible.value = true;
 };
 
-const handleOk = (e) => {
-    userStore.handleSignup(userCredentials);
+const clearUserCredentialsInput = () => {
+    userCredentials.email = "";
+    userCredentials.password = "";
+    userCredentials.username = "";
+    userStore.clearErrorMessage();
+}
+
+const handleOk = async (e) => {
+    await userStore.handleSignup(userCredentials);
+    if(user.value) {
+        visible.value = false;
+        clearUserCredentialsInput();
+    }
 };
 
 const handleCancel = () => {
-    userStore.clearErrorMessage();
+    clearUserCredentialsInput();
     visible.value = false;
 }
 
@@ -48,9 +59,12 @@ const title = props.isLogin ? 'Login' : 'Signup';
                 </AButton>
             </template>
             <div v-if="!loading" class="input-container">
-                <AInput class="input" v-if="!isLogin" v-model:value="userCredentials.username" placeholder="Username" />
-                <AInput class="input" v-model:value="userCredentials.email" placeholder="Email" />
-                <AInput class="input" v-model:value="userCredentials.password" placeholder="Password" type="password" />
+                <AInput class="input" v-if="!isLogin" 
+                    v-model:value="userCredentials.username" placeholder="Username" />
+                <AInput class="input" 
+                    v-model:value="userCredentials.email" placeholder="Email" />
+                <AInput class="input" 
+                    v-model:value="userCredentials.password" placeholder="Password" type="password" />
             </div>
             <div v-else class="spinner">
                 <ASpin></ASpin>
