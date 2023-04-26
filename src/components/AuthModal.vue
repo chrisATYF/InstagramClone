@@ -17,7 +17,6 @@ const userCredentials = reactive({
 
 const showModal = () => {
     visible.value = true;
-    userStore.getUser();
 };
 
 const clearUserCredentialsInput = () => {
@@ -39,8 +38,8 @@ const handleOk = async (e) => {
     }
 
     if(user.value) {
-        visible.value = false;
         clearUserCredentialsInput();
+        visible.value = false;
     }
 };
 
