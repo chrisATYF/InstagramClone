@@ -7,6 +7,7 @@ import {ref} from "vue"
 import { storeToRefs } from "pinia"
 
 const userStore = useUserStore()
+
 const {user, loadingUser} = storeToRefs(userStore)
 const router = useRouter()
 const searchUsername = ref("")
@@ -20,6 +21,10 @@ const onSearch = () => {
 
 const handleLogout = async () => {
     await userStore.handleLogout()
+}
+
+const goToUsersProfile = () => {
+    router.push(`/profile/${user.value.username}`)
 }
 </script>
 
@@ -42,7 +47,7 @@ const handleLogout = async () => {
                         <AuthModal :isLogin="true"/>
                     </div>
                     <div class="left-content" v-else>
-                        <AButton type="primary">Profile</AButton>
+                        <AButton type="primary" @click="goToUsersProfile">Profile</AButton>
                         <AButton type="primary" @click="handleLogout">Logout</AButton>
                     </div> 
                 </div>
