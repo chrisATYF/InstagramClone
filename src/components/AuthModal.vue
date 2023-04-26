@@ -17,6 +17,7 @@ const userCredentials = reactive({
 
 const showModal = () => {
     visible.value = true;
+    userStore.getUser();
 };
 
 const clearUserCredentialsInput = () => {

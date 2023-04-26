@@ -116,7 +116,24 @@ export const useUserStore = defineStore('users', () => {
     loading.value = false;
   };
 
-  const getUser = () => {};
+  const getUser = async () => {
+    loading.value = true;
+    const data = await supabase.auth.getUser();
+
+    const {data: userWithEmail} = await supabase
+      .from("users")
+      .select()
+      .eq("email", data.users.email)
+      .single();
+      
+    user.value = ({
+      username: userWithEmail.username,
+      email: userWithEmail.email,
+      id: userWithEmail.id
+    });
+
+    loading.value = false;
+  };
 
   const clearErrorMessage = () => {
     errorMessage.value = "";
