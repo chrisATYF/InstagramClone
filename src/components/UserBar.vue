@@ -1,5 +1,15 @@
 <script setup>
 import { defineProps } from "vue";
+import UploadPhotoModal from "./UploadPhotoModal.vue";
+import { useRoute } from "vue-router";
+import { useUserStore } from "../stores/users";
+import { storeToRefs } from "pinia";
+
+const route = useRoute();
+const userStore = useUserStore();
+
+const { user } = storeToRefs(userStore);
+const { username: profileUsername } = route.params;
 
 const props = defineProps(['username', 'userInfo']);
 </script>
@@ -8,6 +18,7 @@ const props = defineProps(['username', 'userInfo']);
     <div class="userbar-container">
         <div class="top-content">
             <ATypographyTitle :level="2">{{props.username}}</ATypographyTitle>
+            <UploadPhotoModal v-if="user && profileUsername === user.username"></UploadPhotoModal>
         </div>
         <div class="bottom-content">
             <ATypographyTitle :level="5">{{props.userInfo.posts}} posts</ATypographyTitle>
@@ -31,6 +42,12 @@ const props = defineProps(['username', 'userInfo']);
     margin: 0 !important;
     margin-right: 30px !important;
     padding: 0;
+    align-items: center;
+}
+
+.top-content {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
 }
 </style>
