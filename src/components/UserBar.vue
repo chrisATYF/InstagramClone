@@ -11,15 +11,23 @@ const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
 const { username: profileUsername } = route.params;
 
-const props = defineProps(['user', 'userInfo', 'addNewPost']);
+const props = defineProps(['user', 'userInfo', 'addNewPost', 'isFollowing', 'updateIsFollowing']);
 
 const followUser = async () => {
-    const response = await supabase.from('followers_following').insert({
-            follower_id: user.value.id,
-            following_id: props.user.id
-        });
+    props.updateIsFollowing(true);
+    await supabase.from('followers_following').insert({
+        follower_id: user.value.id,
+        following_id: props.user.id
+    });
+};
 
-    console.log({response});
+const unFollowUser = async () => {
+    props.updateIsFollowing(false);
+    await supabase
+        .from('followers_following')
+        .delete()
+        .eq("follower_id", user.value.id)
+        .eq("following_id", props.user.id);
 };
 </script>
 
@@ -32,7 +40,10 @@ const followUser = async () => {
                     v-if="profileUsername === user.username"
                     :addNewPost="addNewPost"    
                 ></UploadPhotoModal>
-                <AButton v-else @click="followUser">Follow</AButton>
+                <div v-else>
+                    <AButton v-if="!props.isFollowing" @click="followUser">Follow</AButton>
+                    <AButton v-else @click="unFollowUser">Following</AButton>
+                </div>
             </div>
         </div>
         <div class="bottom-content">
