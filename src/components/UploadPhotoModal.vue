@@ -61,7 +61,7 @@ const handleUploadChange = (e) => {
       <AButton @click="showModal">Upload Photo</AButton>
       <AModal v-model:visible="visible" title="Upload Photo" @ok="handleOk">
         <div v-if="!loading">
-            <input type="file" accept=".jpeg,.png" @change="handleUploadChange">
+            <input type="file" accept=".jpeg,.png,.jpg" @change="handleUploadChange">
             <AInput 
                 v-model:value="caption" 
                 placeholder="Caption..."
