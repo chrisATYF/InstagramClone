@@ -5,10 +5,13 @@ import ImageGallery from "./ImageGallery.vue";
 import { ref, onMounted } from "vue";
 import { supabase } from "../supabase";
 import { useRoute } from "vue-router";
+import { useUserStore } from "../stores/users";
 
 const route = useRoute();
+const userStore = useUserStore();
 const posts = ref([]);
 const user = ref(null);
+const isFollowing = ref(false);
 const { username } = route.params;
 const loading = ref(false);
 
@@ -39,6 +42,13 @@ const fetchData = async () => {
 
     posts.value = postsData;
     loading.value = false;
+};
+
+const fetchIsFollowing = async () => {
+    const response = await supabase
+        .from("followers_following")
+        .select()
+        .eq("follower_id", user.value.id);
 };
 
 onMounted(() => {

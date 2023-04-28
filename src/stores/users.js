@@ -1,12 +1,12 @@
-import { ref } from 'vue'
-import { defineStore } from 'pinia'
-import {supabase} from "../supabase"
+import { ref } from 'vue';
+import { defineStore } from 'pinia';
+import {supabase} from "../supabase";
 
 export const useUserStore = defineStore('users', () => {
   const user = ref(null);
-  const errorMessage = ref("")
-  const loading = ref(false)
-  const loadingUser = ref(false)
+  const errorMessage = ref("");
+  const loading = ref(false);
+  const loadingUser = ref(false);
 
   const validateEmail = (email) => {
     return String(email)
@@ -17,14 +17,14 @@ export const useUserStore = defineStore('users', () => {
   };
 
   const handleLogin = async (credentials) => {
-    const {email, password} = credentials
+    const {email, password} = credentials;
 
     if(!validateEmail(email)){
-      return errorMessage.value = "Email is invalid"
+      return errorMessage.value = "Email is invalid";
     }
 
     if(!password.length){
-      return errorMessage.value = "Password cannot be empty"
+      return errorMessage.value = "Password cannot be empty";
     }
 
     loading.value = true;
@@ -36,59 +36,60 @@ export const useUserStore = defineStore('users', () => {
 
     if(error) {
       loading.value = false;
-      return errorMessage.value = error.message
+      return errorMessage.value = error.message;
     }
 
     const {data: existingUser} = await supabase
       .from("users")
       .select()
       .eq('email', email)
-      .single()
+      .single();
     
     user.value = {
       email: existingUser.email,
       username: existingUser.username,
       id: existingUser.id
-    }
+    };
+
     loading.value = false;
-    errorMessage.value = ""
+    errorMessage.value = "";
   }
 
   const handleSignup = async (credentials) => {
     const {email, password, username} = credentials;
 
     if(password.length < 6){
-      return errorMessage.value = "Password length is too short"
+      return errorMessage.value = "Password length is too short";
     }
 
     if(username.length < 4){
-      return errorMessage.value = "Username length is too short"
+      return errorMessage.value = "Username length is too short";
     }
 
     if(!validateEmail(email)){
-      return errorMessage.value = "Email is invalid"
+      return errorMessage.value = "Email is invalid";
     }
 
-    loading.value = true
+    loading.value = true;
 
     const {data: userWithUsername} = await supabase
       .from("users")
       .select()
       .eq('username', username)
-      .single()
+      .single();
 
     
     if(userWithUsername){
-      loading.value = false
-      return errorMessage.value = "User already registered"
+      loading.value = false;
+      return errorMessage.value = "User already registered";
     }
 
-    errorMessage.value = ""
+    errorMessage.value = "";
 
     const {error} = await supabase.auth.signUp({
       email,
       password
-    })
+    });
 
     if(error){
       loading.value = false
@@ -104,22 +105,22 @@ export const useUserStore = defineStore('users', () => {
       .from("users")
       .select()
       .eq('email', email)
-      .single()
+      .single();
 
     
     user.value = {
       id: newUser.id,
       email: newUser.email,
       username: newUser.username
-    }
+    };
 
-    loading.value = false
-  }
+    loading.value = false;
+  };
 
   const handleLogout = async () => {
-    await supabase.auth.signOut()
-    user.value = null
-  }
+    await supabase.auth.signOut();
+    user.value = null;
+  };
 
   const getUser = async () => {
     loadingUser.value = true;
@@ -127,27 +128,27 @@ export const useUserStore = defineStore('users', () => {
 
     if(!data.user) {
       loadingUser.value = false;
-      return user.value = null
+      return user.value = null;
     }
 
     const {data: userWithEmail} = await supabase
       .from("users")
       .select()
       .eq("email", data.user.email)
-      .single()
+      .single();
     
     user.value = {
       username: userWithEmail.username,
       email: userWithEmail.email,
       id: userWithEmail.id
-    }
+    };
 
-    loadingUser.value = false
-  }
+    loadingUser.value = false;
+  };
 
   const clearErrorMessage = () => {
-    errorMessage.value = ""
-  }
+    errorMessage.value = "";
+  };
 
   return { 
     user, 
@@ -160,5 +161,5 @@ export const useUserStore = defineStore('users', () => {
     handleLogout, 
     getUser,
     clearErrorMessage
-  }
-})
+  };
+});

@@ -1,31 +1,31 @@
 <script setup>
-import {RouterLink, useRouter} from "vue-router"
-import Container from "./Container.vue"
-import AuthModal from "./AuthModal.vue"
-import {useUserStore} from "../stores/users"
-import {ref} from "vue"
-import { storeToRefs } from "pinia"
+import {RouterLink, useRouter} from "vue-router";
+import Container from "./Container.vue";
+import AuthModal from "./AuthModal.vue";
+import {useUserStore} from "../stores/users";
+import {ref} from "vue";
+import { storeToRefs } from "pinia";
 
-const userStore = useUserStore()
+const userStore = useUserStore();
 
-const {user, loadingUser} = storeToRefs(userStore)
-const router = useRouter()
-const searchUsername = ref("")
+const {user, loadingUser} = storeToRefs(userStore);
+const router = useRouter();
+const searchUsername = ref("");
 
 const onSearch = () => {
     if(searchUsername.value){
         router.push(`/profile/${searchUsername.value}`);
-        searchUsername.value = ""
+        searchUsername.value = "";
     }
-}
+};
 
 const handleLogout = async () => {
-    await userStore.handleLogout()
-}
+    await userStore.handleLogout();
+};
 
 const goToUsersProfile = () => {
-    router.push(`/profile/${user.value.username}`)
-}
+    router.push(`/profile/${user.value.username}`);
+};
 </script>
 
 <template>

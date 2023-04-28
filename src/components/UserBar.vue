@@ -4,14 +4,23 @@ import UploadPhotoModal from "./UploadPhotoModal.vue";
 import { useRoute } from "vue-router";
 import { useUserStore } from "../stores/users";
 import { storeToRefs } from "pinia";
+import { supabase } from "../supabase";
 
 const route = useRoute();
 const userStore = useUserStore();
-
 const { user } = storeToRefs(userStore);
 const { username: profileUsername } = route.params;
 
 const props = defineProps(['user', 'userInfo', 'addNewPost']);
+
+const followUser = async () => {
+    const response = await supabase.from('followers_following').insert({
+            follower_id: user.value.id,
+            following_id: props.user.id
+        });
+
+    console.log({response});
+};
 </script>
 
 <template>
@@ -23,7 +32,7 @@ const props = defineProps(['user', 'userInfo', 'addNewPost']);
                     v-if="profileUsername === user.username"
                     :addNewPost="addNewPost"    
                 ></UploadPhotoModal>
-                <AButton v-else>Follow</AButton>
+                <AButton v-else @click="followUser">Follow</AButton>
             </div>
         </div>
         <div class="bottom-content">

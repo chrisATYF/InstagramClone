@@ -15,7 +15,7 @@ const data = [
         url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9UHBpQUOaUk1KncG-gATabtzPcv-Cy_chRA&usqp=CAU",
         caption: "Beautiful trees"
     }
-]
+];
 
 </script>
 

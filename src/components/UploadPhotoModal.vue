@@ -22,6 +22,7 @@ const handleOk = async (e) => {
     // there is a chance of dups
     const fileName = Math.floor(Math.random() * 10000000000000000);
     let filePath;
+
     if(file.value) {
         const { data, error } = await supabase.storage
             .from("images")
@@ -29,7 +30,7 @@ const handleOk = async (e) => {
         
         if(error) {
             loading.value = false;
-            return errorMessage.value = "Unable to upload image"
+            return errorMessage.value = "Unable to upload image";
         }
 
         filePath = data.path

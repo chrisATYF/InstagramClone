@@ -1,7 +1,7 @@
 <script setup>
 import { ref, defineProps, reactive } from 'vue';
-import { useUserStore } from "../stores/users"
-import { storeToRefs } from "pinia"
+import { useUserStore } from "../stores/users";
+import { storeToRefs } from "pinia";
 
 const userStore = useUserStore();
 
@@ -24,7 +24,7 @@ const clearUserCredentialsInput = () => {
     userCredentials.password = "";
     userCredentials.username = "";
     userStore.clearErrorMessage();
-}
+};
 
 const handleOk = async (e) => {
     if(props.isLogin) {
@@ -46,7 +46,7 @@ const handleOk = async (e) => {
 const handleCancel = () => {
     clearUserCredentialsInput();
     visible.value = false;
-}
+};
 
 const title = props.isLogin ? 'Login' : 'Signup';
 </script>
