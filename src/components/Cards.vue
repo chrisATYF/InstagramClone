@@ -3,7 +3,7 @@ import { supabase } from "../supabase";
 import Card from "./Card.vue";
 import { useUserStore } from "../stores/users";
 import { storeToRefs } from "pinia";
-import { ref, onMounted } from "vue"
+import { ref, onMounted } from "vue";
 
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);

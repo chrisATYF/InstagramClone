@@ -68,7 +68,7 @@ const fetchFollowersCount = async () => {
     const {count} = await supabase
         .from("followers_following")
         .select('*', { count: 'exact' })
-        .eq("following_id", user.value.id)
+        .eq("following_id", user.value.id);
     
     return count;
 };
@@ -77,7 +77,7 @@ const fetchFollowingCount = async () => {
     const {count} = await supabase
         .from("followers_following")
         .select('*', { count: 'exact' })
-        .eq("follower_id", user.value.id)
+        .eq("follower_id", user.value.id);
     
     return count;
 };
